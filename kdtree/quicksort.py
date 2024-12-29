@@ -14,7 +14,7 @@ def partition_lomuto(arr,l,r,dim):
 
 # wersja Hoare'a
 def partition_hoare(arr,l,r,dim):
-    pivot = arr[(l+r)//2][dim]
+    pivot = arr[l][dim]
     i = l-1
     j = r+1
     while True:
@@ -25,15 +25,17 @@ def partition_hoare(arr,l,r,dim):
         while arr[j][dim] > pivot:
             j-=1
         if i>=j:
+            #arr[i], arr[j] = arr[j], arr[i]
             return j
         arr[i],arr[j] = arr[j],arr[i]
+
 
 def quicksort(arr,l,r,dim):
     if l<r:
         q = partition_hoare(arr,l,r,dim)
-        quicksort(arr,l,q-1,dim)
+        quicksort(arr,l,q,dim)
         quicksort(arr,q+1,r,dim)
 
-test = [(2,3),(5,4),(9,6),(4,7),(8,1),(7,2)]
-quicksort(test,0,len(test)-1,1)
-print(test)
+# test = [(2,3),(5,4),(9,6),(4,7),(8,1),(7,2)]
+# quicksort(test,0,len(test)-1,1)
+# print(test)
