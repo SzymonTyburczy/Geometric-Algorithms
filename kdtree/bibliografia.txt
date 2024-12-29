@@ -1,1 +1,3 @@
 Mark de Berg "Geometria Obliczeniowa - Algorytmy i Zastosowania"
+Wikipedia kd-tree:
+    https://en.wikipedia.org/wiki/K-d_tree
