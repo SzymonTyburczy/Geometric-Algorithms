@@ -1,6 +1,8 @@
 # implementacja build_kdtree, która zawiera punkty wyłącznie w liściach, a w wierzchołkach medianę dzielącą zbiór,
 # czyli wirtualną prostą, która dzieli przestrzeń na dwie części
 
+# nie działa
+
 from quicksort import quicksort
 
 class Vertex:
@@ -20,9 +22,9 @@ def divide_points(xpoints,ypoints,dim):
             return None
         elif len(xpoints) == 1:
             return xpoints[0], [], [], [], []
-        median = xpoints[len(xpoints) // 2 -1][0]
-        median_point = xpoints[len(xpoints) // 2 -1]
-        print("median: ", median_point)
+        median = xpoints[(len(xpoints)-1) // 2][0]
+        median_point = xpoints[(len(xpoints)-1) // 2]
+        # print("median: ", median_point)
         leftx = [point for point in xpoints if point[0] <= median]
         rightx = [point for point in xpoints if point[0] > median]
         lefty = [point for point in ypoints if point[0] <= median]
@@ -32,9 +34,9 @@ def divide_points(xpoints,ypoints,dim):
             return None
         elif len(ypoints) == 1:
             return ypoints[0], [], [], [], []
-        median = ypoints[len(ypoints) // 2 - 1][1]
-        median_point = ypoints[len(ypoints) // 2 -1]
-        print("median: ", median_point)
+        median = ypoints[(len(ypoints)-1) // 2 ][1]
+        median_point = ypoints[(len(ypoints)-1) // 2 ]
+        # print("median: ", median_point)
         leftx = [point for point in xpoints if point[1] <= median]
         rightx = [point for point in xpoints if point[1] > median]
         lefty = [point for point in ypoints if point[1] <= median]
@@ -46,9 +48,9 @@ def kdtree_init(points):
     y_sorted = sort_by_dim(points, 1)
 
     def build_kdtree(xpoints,ypoints, depth):
-        print("depth: ",depth)
-        print(xpoints)
-        print(ypoints)
+        # print("depth: ",depth)
+        # print(xpoints)
+        # print(ypoints)
 
         if depth % 2 == 0:
             if len(xpoints) == 0:
@@ -72,12 +74,10 @@ def kdtree_init(points):
             else:
                 return None
 
-        vertex = Vertex(median, build_kdtree(leftx,lefty, depth + 1), build_kdtree(rightx,righty, depth + 1))
-
-        return vertex
+        return Vertex(median, build_kdtree(leftx,lefty, depth + 1), build_kdtree(rightx,righty, depth + 1))
 
     return build_kdtree(x_sorted, y_sorted, 0)
 
-test_data = [(1,1),(2,3),(0.5,4),(5.5,4.5),(6,2),(4,2.5),(3.5,6),(4.5,3.5)]
-kdtree = kdtree_init(test_data)
-print(kdtree.point)
+# test_data = [(1,1),(2,3),(0.5,4),(5.5,4.5),(6,2),(4,2.5),(3.5,6),(4.5,3.5)]
+# kdtree = kdtree_init(test_data)
+# print(kdtree.point)

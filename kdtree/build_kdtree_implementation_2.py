@@ -1,6 +1,8 @@
 # Implementacja struktury kdtree dla 2 wymiarów (2dtree), wszystkie wierzchołki zawierają punkty.
 # Raczej nie nadaje się najlepiej do wyszukiwania punktów w obszarze, ale do znajdowania najbliższego punktu
 
+# nie działa
+
 from quicksort import quicksort
 
 class Vertex:
@@ -15,8 +17,8 @@ def divide_points(xpoints,ypoints,dim):
             return None
         elif len(xpoints) == 1:
             return xpoints[0], [], [], [], []
-        median = xpoints[len(xpoints) // 2 -1][0]
-        median_point = xpoints[len(xpoints) // 2 -1]
+        median = xpoints[(len(xpoints)-1) // 2 ][0]
+        median_point = xpoints[(len(xpoints)-1) // 2]
         print("median: ", median_point)
         leftx = [point for point in xpoints if (point[0] <= median and point != median_point)]
         rightx = [point for point in xpoints if point[0] > median]
@@ -27,8 +29,8 @@ def divide_points(xpoints,ypoints,dim):
             return None
         elif len(ypoints) == 1:
             return ypoints[0], [], [], [], []
-        median = ypoints[len(ypoints) // 2 -1][1]
-        median_point = ypoints[len(ypoints) // 2 -1]
+        median = ypoints[(len(ypoints)-1) // 2][1]
+        median_point = ypoints[(len(ypoints)-1) // 2 ]
         print("median: ", median_point)
         leftx = [point for point in xpoints if (point[1] <= median and point != median_point)]
         rightx = [point for point in xpoints if point[1] > median]
@@ -46,44 +48,61 @@ def kdtree_init(points):
     x_sorted = sort_by_dim(points, 0)
     y_sorted = sort_by_dim(points, 1)
 
+    # def build_kdtree(xpoints, ypoints, depth):
+    #     print("depth: ", depth)
+    #     print(xpoints)
+    #     print(ypoints)
+    #     # if len(points) == 0:
+    #     #     return None
+    #     # if len(points) == 1:
+    #     #     return points[0]
+    #     if depth % 2 == 0:
+    #         if len(xpoints) == 0:
+    #             return None
+    #         if len(xpoints) == 1:
+    #             return Vertex(xpoints[0])
+    #         division = divide_points(xpoints, ypoints, depth)
+    #         if division:
+    #             point, leftx, rightx, lefty, righty = division
+    #         else:
+    #             return None
+    #         # leftP = None  # points smaller or equal to median x
+    #         # rightP = None  # points greater than median x
+    #     else:
+    #         if len(ypoints) == 0:
+    #             return None
+    #         if len(ypoints) == 1:
+    #             return Vertex(ypoints[0])
+    #         division = divide_points(xpoints, ypoints, depth)
+    #         if division:
+    #             point, leftx, rightx, lefty, righty = division
+    #         else:
+    #             return None
+    #
+    #     return Vertex(point, build_kdtree(leftx, lefty, depth + 1), build_kdtree(rightx, righty, depth + 1))
+
     def build_kdtree(xpoints, ypoints, depth):
         print("depth: ", depth)
         print(xpoints)
         print(ypoints)
-        # if len(points) == 0:
-        #     return None
-        # if len(points) == 1:
-        #     return points[0]
-        if depth % 2 == 0:
-            if len(xpoints) == 0:
-                return None
-            if len(xpoints) == 1:
-                return Vertex(xpoints[0])
-            division = divide_points(xpoints, ypoints, depth)
-            if division:
-                point, leftx, rightx, lefty, righty = division
-            else:
-                return None
-            # leftP = None  # points smaller or equal to median x
-            # rightP = None  # points greater than median x
-        else:
-            if len(ypoints) == 0:
-                return None
-            if len(ypoints) == 1:
-                return Vertex(ypoints[0])
-            division = divide_points(xpoints, ypoints, depth)
-            if division:
-                point, leftx, rightx, lefty, righty = division
-            else:
-                return None
-            # leftP = None  # points smaller or equal to median y
-            # rightP = None  # points greater than median y
 
-        vertex = Vertex(point, build_kdtree(leftx, lefty, depth + 1), build_kdtree(rightx, righty, depth + 1))
+        if len(xpoints) == 1:
+            return Vertex(xpoints[0])
+        if len(ypoints) == 1:
+            return Vertex(ypoints[0])
 
-        # build_kdtree(leftP,depth+1),
-        # build_kdtree(rightP,depth+1)
-        # make vertex with median as root and leftP and rightP as children
+        division = divide_points(xpoints, ypoints, depth)
+        if not division:
+            return Vertex(None)
+
+        point, leftx, rightx, lefty, righty = division
+
+        left_child = build_kdtree(leftx, lefty, depth + 1)
+        right_child = build_kdtree(rightx, righty, depth + 1)
+
+        vertex = Vertex(point, left_child, right_child)
+        print("vertex: ",vertex.point,vertex.left,vertex.right)
+
         return vertex
 
     return build_kdtree(x_sorted, y_sorted, 0)
@@ -91,6 +110,7 @@ def kdtree_init(points):
 
 test_data = [(1,1),(2,3),(0.5,4),(5.5,4.5),(6,2),(4,2.5),(3.5,6),(4.5,3.5)]
 # test_data = [(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8)]
+# test_data = [(1,1),(1,4),(2,3),(6,2),(4,4),(2,7),(6,6),(8,4),(8,6)]
 # xsorted  = sort_by_dim(test_data,0)
 # ysorted = sort_by_dim(test_data,1)
 # print(xsorted)
@@ -111,4 +131,5 @@ test_data = [(1,1),(2,3),(0.5,4),(5.5,4.5),(6,2),(4,2.5),(3.5,6),(4.5,3.5)]
 # print(ry)
 
 kdtree = kdtree_init(test_data)
-print(kdtree.point)
+#print(kdtree.point)
+#print(kdtree.left)
