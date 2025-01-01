@@ -1,3 +1,5 @@
+# kdtree obiektowo, ale jedynie liście zawierają punkty
+
 # kdtree obiektowo, opcja w której wierzchołki zawierają punkty
 
 from quicksort import quicksort
@@ -32,9 +34,9 @@ class KDtree:
                 return xpoints[0], [], [], [], []
             median = xpoints[(len(xpoints)-1) // 2][0]
             median_point = xpoints[(len(xpoints)-1) // 2]
-            leftx = [point for point in xpoints if (point[0] <= median and point != median_point)]
+            leftx = [point for point in xpoints if point[0] <= median]
             rightx = [point for point in xpoints if point[0] > median]
-            lefty = [point for point in ypoints if (point[0] <= median and point != median_point)]
+            lefty = [point for point in ypoints if point[0] <= median]
             righty = [point for point in ypoints if point[0] > median]
         else:
             if not ypoints:
@@ -43,9 +45,9 @@ class KDtree:
                 return ypoints[0], [], [], [], []
             median = ypoints[(len(ypoints)-1) // 2 ][1]
             median_point = ypoints[(len(ypoints)-1) // 2 ]
-            leftx = [point for point in xpoints if (point[1] <= median and point != median_point)]
+            leftx = [point for point in xpoints if point[1] <= median]
             rightx = [point for point in xpoints if point[1] > median]
-            lefty = [point for point in ypoints if (point[1] <= median and point != median_point)]
+            lefty = [point for point in ypoints if point[1] <= median]
             righty = [point for point in ypoints if point[1] > median]
         return median_point, leftx, rightx, lefty, righty
 
@@ -97,7 +99,7 @@ class KDtree:
                 right = self.search_area(area,root.right,depth+1)
             else:
                 right = []
-        if area[0][0] <= root.point[0] <= area[1][0] and area[0][1] <= root.point[1] <= area[1][1]:
+        if area[0][0] <= root.point[0] <= area[1][0] and area[0][1] <= root.point[1] <= area[1][1] and not root.left and not root.right:
             return left + [root.point] + right
         else:
             return left + right
