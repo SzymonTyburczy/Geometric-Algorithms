@@ -97,15 +97,15 @@ class KDtree:
 
     @staticmethod
     def area_in_bounds(area, bounds):
-        if area[0][0] > bounds[0][0] and area[0][1] > bounds[0][1] and area[1][0] < bounds[1][0] and area[1][1] < bounds[1][1]:
-            print(area,bounds)
+        if area[0][0] >= bounds[0][0] and area[0][1] >= bounds[0][1] and area[1][0] <= bounds[1][0] and area[1][1] <= bounds[1][1]:
+            # print(area,bounds)
             return True
         return False
 
     @staticmethod
     def bounds_in_area(area,bounds):
-        if bounds[0][0] > area[0][0] and bounds[0][1] > area[0][1] and bounds[1][0] < area[1][0] and bounds[1][1] < area[1][1]:
-            print(bounds,area)
+        if bounds[0][0] >= area[0][0] and bounds[0][1] >= area[0][1] and bounds[1][0] <= area[1][0] and bounds[1][1] <= area[1][1]:
+            # print(bounds,area)
             return True
         return False
 
@@ -121,29 +121,29 @@ class KDtree:
         dim = depth % 2
         if root is None:
             return []
-        print(root.point, depth)
+        # print(root.point, depth)
 
         if area[0][0] <= root.point[0] <= area[1][0] and area[0][1] <= root.point[1] <= area[1][1]:
             result.append(root.point)
         if dim == 0:
             left_bounds = ((bounds[0][0],bounds[0][1]),(root.point[0],bounds[1][1]))
-            right_bounds = ((bounds[0][0],root.point[0]),(bounds[1][0],bounds[1][1]))
+            right_bounds = ((root.point[0],bounds[0][1]),(bounds[1][0],bounds[1][1]))
         else:
             left_bounds = ((bounds[0][0], bounds[0][1]), (bounds[1][0], root.point[1]))
             right_bounds = ((bounds[0][0], root.point[1]), (bounds[1][0], bounds[1][1]))
-        print(left_bounds)
-        print(right_bounds)
-        print(result)
+        # print(left_bounds)
+        # print(right_bounds)
+        # print(result)
 
 
         if self.area_in_bounds(area,left_bounds):
-            print("left")
+            # print("left")
             if self.bounds_in_area(area,left_bounds):
                 self.add_all_points(root.left,result)
             else:
                 self.search_area_bb(area,root.left,result,depth+1,left_bounds)
         elif self.area_in_bounds(area,right_bounds):
-            print("right")
+            # print("right")
             if self.bounds_in_area(area,right_bounds):
                 self.add_all_points(root.right,result)
             else:
@@ -155,14 +155,14 @@ class KDtree:
                 self.search_area_bb(area,root.right,result,depth+1,right_bounds)
 
 
-test_data = [(1,1),(2,3),(0.5,4),(5.5,4.5),(6,2),(4,2.5),(3.5,6),(4.5,3.5)]
-kdtree = KDtree(test_data)
+# test_data = [(1,1),(2,3),(0.5,4),(5.5,4.5),(6,2),(4,2.5),(3.5,6),(4.5,3.5)]
+# kdtree = KDtree(test_data)
 # print(kdtree.get_root().left.right.right.point)
 # print(kdtree.search_area([(2,2),(6,6)],kdtree.get_root(),0)) # [(2, 3), (4, 2.5), (4.5, 3.5), (5.5, 4.5), (3.5, 6), (6, 2)]
 # result = []
 # kdtree.search_area_bb([(2,2),(6,6)],kdtree.get_root(),result,0)
 # print(result) # [(2, 3), (4, 2.5), (4.5, 3.5), (5.5, 4.5), (3.5, 6), (6, 2)]
-new_result = []
-kdtree.search_area_bb([(5,4),(6,6)],kdtree.get_root(),new_result,0)
-print(new_result) # [(5.5, 4.5)]
+# new_result = []
+# kdtree.search_area_bb([(5,4),(6,6)],kdtree.get_root(),new_result,0)
+# print(new_result) # [(5.5, 4.5)]
 # print(kdtree.search_area([(5,4),(6,6)],kdtree.get_root(),0)) # [(5.5, 4.5)]

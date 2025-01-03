@@ -8,9 +8,13 @@ from quicksort import quicksort
 class KDtree:
     class Vertex:
         def __init__(self, point, left=None, right=None):
-            self.point = point
+            self.divider = point
             self.left = None
             self.right = None
+
+    class Leaf:
+        def __init__(self, point):
+            self.point = point
 
 
 
@@ -23,7 +27,8 @@ class KDtree:
     def get_root(self):
         return self.root
 
-    def sort_by_dim(self,points,dim):
+    @staticmethod
+    def sort_by_dim(points, dim):
         sorted_points = points[:]
         quicksort(sorted_points, 0, len(points) - 1, dim)
         return sorted_points
@@ -79,6 +84,27 @@ class KDtree:
         root.left = self.build_tree(leftx,lefty,depth+1)
         root.right = self.build_tree(rightx,righty,depth+1)
         return root
+
+    def divide_points2(self,xpoints,ypoints,dim):
+        pass
+
+# sprobuj zrobic to, tylko zamiast xpoints, ypoints bedzie tablica tablic, kod powienien sie skrocic
+# i byc latwo rozszerzalny na dowolna ilosc wymiarow
+    def build_tree2(self,xpoints,ypoints,depth):
+        if depth % 2 == 0:
+            if len(xpoints) == 1:
+                return self.Leaf(xpoints[0])
+            division = self.divide_points2(xpoints, ypoints, depth)
+            if division:
+                median, leftx, rightx, lefty, righty = division
+            else:
+                return None
+        else:
+            if len(ypoints) == 1:
+                return self.Leaf(ypoints[0])
+            division = self.divide_points2(xpoints, ypoints, depth)
+
+
 
     def search_area(self,area,root,depth):
         if root is None:
