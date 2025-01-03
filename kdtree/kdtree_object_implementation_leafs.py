@@ -13,6 +13,8 @@ class KDtree:
             self.right = None
 
 
+
+
     def __init__(self,points):
         xpoints = self.sort_by_dim(points,0)
         ypoints = self.sort_by_dim(points,1)
@@ -54,8 +56,8 @@ class KDtree:
 
     def build_tree(self,xpoints,ypoints,depth):
         if depth % 2 == 0:
-            if not xpoints:
-                return None
+            # if not xpoints:
+            #     return None
             if len(xpoints) == 1:
                 return self.Vertex(xpoints[0])
             division = self.divide_points(xpoints, ypoints, depth)
