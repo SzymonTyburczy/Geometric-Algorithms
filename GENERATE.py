@@ -73,5 +73,3 @@ def try_halfevenly7():
 # Funkcja zwracajaca losowy zbior punktow o zadanych parametrach
 def generate_points(n=1000, maks=10 ** 9):
     return [(randint(-maks, maks), randint(-maks, maks)) for _ in range(n)]
-
-print(try_halfevenly7())
