@@ -32,10 +32,11 @@ def evenly(s, e, n):
     return grid_points_even
 
 
-def halfevenly(s1, e1, s2, e2, n):
-    x_values = np.linspace(s1, e1, n)  # Środki sektorów na osi x
-    y_values = np.linspace(s2, e2, n)  # Środki sektorów na osi y
+def halfevenly(s1, e1, s2, e2):
+    x_values = np.linspace(s1, e1, e1-s1+1)  # Środki sektorów na osi x
+    y_values = np.linspace(s2, e2, e2-s2+1)  # Środki sektorów na osi y
     grid_points_even = [(x, y) for x in x_values for y in y_values]  # Generowanie punktów
+
     return grid_points_even
 
 
@@ -45,7 +46,7 @@ def try_evenly1():
 
 
 def try_evenly2():
-    return evenly(0.5, 9.5, 100)
+    return evenly(0.5, 9.5, 10)
 
 
 def try_evenly3():
@@ -54,21 +55,23 @@ def try_evenly3():
 
 
 def try_evenly4():
-    return evenly(-9.5, 9.5, 400)
+    return evenly(-9.5, 9.5, 20)
 
 
 def try_evenly5():
-    return evenly(-4.5, 4.5, 100)
+    return evenly(-4.5, 4.5, 10)
 
 
 def try_halfevenly6():
-    return halfevenly(-2, 2, -2, 25, 140)
+    return halfevenly(-2, 2, -2, 25)
 
 
 def try_halfevenly7():
-    return halfevenly(-20, 40, -3, 10, 854)
+    return halfevenly(-20, 40, -3, 10)
 
 
 # Funkcja zwracajaca losowy zbior punktow o zadanych parametrach
 def generate_points(n=1000, maks=10 ** 9):
     return [(randint(-maks, maks), randint(-maks, maks)) for _ in range(n)]
+
+print(try_halfevenly7())
