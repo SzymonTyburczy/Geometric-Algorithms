@@ -4,6 +4,7 @@ Repository for the subject Geometric Algorithms - the Quad and KD Trees project 
 The creators of the project are: Szymon Tyburczy and Marek Swakoń
 
 <img src="https://github.com/SzymonTyburczy/Geometric-Algorithms/blob/main/Screenshot%202025-01-04%20010222.png" alt="Opis obrazka" width="1500">
+<img src="https://github.com/SzymonTyburczy/Geometric-Algorithms/blob/main/Screenshot%202025-01-04%20010658.png" alt="Opis obrazka" width="1500">
 
 
 
