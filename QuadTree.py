@@ -1,3 +1,43 @@
+class Point:
+    """
+    Klasa reprezentująca punkt na płaszczyźnie.
+    """
+    """Konstruktor punktu"""
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return f"Point({self.x}, {self.y})"  # Wypisanie punktu
+
+class QuadTreeNode:
+    """
+    Węzeł w drzewie QuadTree przechowujący:
+      - granice obszaru (x_min, y_min, x_max, y_max),
+      - listę punktów (jeśli jest liściem),
+      - odnośniki do dzieci: NW, NE, SW, SE.
+    """
+
+    def __init__(self, x_min, y_min, x_max, y_max):
+        self.x_min = x_min  # lewy dolny rog wezla
+        self.y_min = y_min  # lewy dolny rog wezla
+        self.x_max = x_max  # prawy gorny rog wezla
+        self.y_max = y_max  # prawy gorny rog wezla
+
+        # Punkty przechowywane w tym węźle (tylko jeśli jest liściem bo jeśli nie jest liściem to ma dzieci i nie ma punktów )
+        self.points = []
+
+        # Dzieci: kolejność (NW, NE, SW, SE), podział na 4 części zgodnie z zasadą tworzenia Quad Tree
+        self.nw = None
+        self.ne = None
+        self.sw = None
+        self.se = None
+
+        # Informacja, czy węzeł jest liściem (ma dzieci czy nie)
+        self.is_leaf = True
+
+
 class QuadTree:
     """
     Klasa zarządzająca QuadTree:
@@ -145,33 +185,40 @@ class QuadTree:
         """
         found_points = []
         self.query_range(self.root, x1, y1, x2, y2, found_points)
-        return found_points
+        return change(found_points)
+
+def find_end_points(points):
+    x_min = float('inf')
+    x_max = float('-inf')
+    y_min = float('inf')
+    y_max = float('-inf')
+
+    for x, y in points:
+        x_min = min(x_min, x)
+        x_max = max(x_max, x)
+        y_min = min(y_min, y)
+        y_max = max(y_max, y)
+    return x_min, y_min, x_max, y_max
 
 
-points_to_insert = [(10, 10), (20, 90), (50, 50), (60, 60), (15, 15), (80, 95), (30, 70), (25, 200)]
+def CreateQuad(points_to_insert):
+    qt = QuadTree(find_end_points(points_to_insert)[0], find_end_points(points_to_insert)[1],
+                  find_end_points(points_to_insert)[2], find_end_points(points_to_insert)[3], capacity=4)
+    for (x, y) in points_to_insert:
+        qt.insert_point(x, y)
+    return qt
 
-x_min = float('inf')
-x_max = float('-inf')
-y_min = float('inf')
-y_max = float('-inf')
+def change(result):
+    new_result = []
+    for i in range(len(result)):
+        new_result.append((result[i].x, result[i].y))
+    return new_result
 
-for x, y in points_to_insert:
-    x_min = min(x_min, x)
-    x_max = max(x_max, x)
-    y_min = min(y_min, y)
-    y_max = max(y_max, y)
 
-qt = QuadTree(x_min, y_min, x_max, y_max, capacity=4)
 
-for (x, y) in points_to_insert:
-    qt.insert_point(x, y)
-
-# Zapytanie: znajdź punkty w prostokącie w obszarze między x1 oraz x2 i y1 oraz y2 - tzn takim prostokącie
-x1 = int(input("Podaj x1: "))
-y1 = int(input("Podaj y1: "))
-x2 = int(input("Podaj x2: "))
-y2 = int(input("Podaj y2: "))
-result = qt.query(x1, y1, x2, y2)
-print(f"Punkty w prostokącie [{x1},{y1}] x [{x2},{y2}]:")
-for p in result:
-    print(p)
+#points_to_insert = [(10, 10), (20, 90), (50, 50), (60, 60), (15, 15), (80, 95), (30, 70), (25, 200)]
+# QT = CreateQuad(points_to_insert)
+# result = change(QT.query(0, 0, 50, 50))
+#print(f"Punkty w prostokącie [{x1},{y1}] x [{x2},{y2}]:")
+# for p in result:
+#     print(p)
