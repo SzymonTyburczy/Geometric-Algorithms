@@ -1,9 +1,12 @@
-from quicksort import quicksort
+from quicksort import quicksort, quicksort_np
+import numpy as np
+
 
 class KDtree:
     class Vertex:
-        def __init__(self, point, left=None, right=None):
-            self.divider = point
+        def __init__(self, point):
+            # point to teraz PEŁNY punkt (np. (x, y)), a nie tylko x lub y
+            self.point = point
             self.left = None
             self.right = None
 
@@ -17,12 +20,11 @@ class KDtree:
         def getclass(self):
             return self.__class__
 
-    def __init__(self,points):
-        new_points = []
-        for i in range(2):
-            new_points.append(self.sort_by_dim(points,i))
-        self.root = self.build_tree(new_points,0)
-
+    def __init__(self, points):
+        # Zamieniamy ewentualne np.array na listę krotek, jeśli trzeba
+        if isinstance(points, np.ndarray):
+            points = [tuple(p) for p in points]
+        self.root = self.build_tree(points, 0)
 
     def get_root(self):
         return self.root
@@ -49,38 +51,67 @@ class KDtree:
             right.append(right_points)
         return median_point, left, right
 
-    def build_tree(self,points,depth):
-        dim = depth % 2
-        if len(points[dim]) == 1:
-            return self.Leaf(points[dim][0])
-        division = self.divide_points(points,dim)
-        if division:
-            median, left, right = division
-        else:
+    def build_tree(self, points, depth=0):
+        if not points:
             return None
-        root = self.Vertex(median[dim])
-        root.left = self.build_tree(left,depth+1)
-        root.right = self.build_tree(right,depth+1)
+        if len(points) == 1:
+            return self.Leaf(points[0])
+
+        dim = depth % 2
+        # Sortujemy punkty względem aktualnego wymiaru:
+        points.sort(key=lambda p: p[dim])
+
+        # Indeks mediany
+        median_idx = len(points) // 2
+        # Pobieramy punkt mediany
+        median_point = points[median_idx]
+
+        # Budujemy węzeł wewnętrzny z CAŁYM punktem
+        root = self.Vertex(median_point)
+
+        # Lewa i prawa część – bez punktu mediany
+        left_points = points[:median_idx]
+        right_points = points[median_idx + 1:]
+
+        # Rekurencyjnie budujemy poddrzewa
+        root.left = self.build_tree(left_points, depth + 1)
+        root.right = self.build_tree(right_points, depth + 1)
+
         return root
 
-
-    def search_area(self,area,root,depth):
+    def search_area(self, area, root, depth=0):
         if root is None:
             return []
-        left = []
-        right = []
+
+        # area = [(x_min, y_min), (x_max, y_max)]
+        x_min, y_min = area[0]
+        x_max, y_max = area[1]
+
         if root.getclass() == self.Vertex:
+            # Punkt w węźle
+            point = root.point
             dim = depth % 2
-            if area[0][dim] <= root.divider:
-                left = self.search_area(area,root.left,depth+1)
+            # lewa / prawa rekursja
+            left_res = []
+            right_res = []
+
+            # Jeśli wymiary pozwalają, idziemy w lewo:
+            # porównujemy root.point[dim] z minimalnym i maksymalnym w danym wymiarze
+            if point[dim] >= (x_min if dim == 0 else y_min):
+                left_res = self.search_area(area, root.left, depth + 1)
+            if point[dim] <= (x_max if dim == 0 else y_max):
+                right_res = self.search_area(area, root.right, depth + 1)
+
+            # Sprawdzamy, czy punkt w węźle sam w sobie leży w obszarze
+            if (x_min <= point[0] <= x_max) and (y_min <= point[1] <= y_max):
+                return left_res + [point] + right_res
             else:
-                left = []
-            if area[1][dim] >= root.divider:
-                right = self.search_area(area,root.right,depth+1)
-            else:
-                right = []
-        else:
-            if root.getclass() == self.Leaf and area[0][0] <= root.point[0] <= area[1][0] and area[0][1] <= root.point[1] <= area[1][1]:
-                return left + [root.point] + right
-        return left + right
+                return left_res + right_res
+
+        else:  # root jest liściem
+            # Sprawdź, czy liść mieści się w obszarze
+            p = root.point
+            if (x_min <= p[0] <= x_max) and (y_min <= p[1] <= y_max):
+                return [p]
+            return []
 
