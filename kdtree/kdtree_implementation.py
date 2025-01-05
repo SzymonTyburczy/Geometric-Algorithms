@@ -1,4 +1,3 @@
-from quicksort import quicksort, quicksort_np
 import numpy as np
 
 
@@ -29,27 +28,6 @@ class KDtree:
     def get_root(self):
         return self.root
 
-    @staticmethod
-    def sort_by_dim(points, dim):
-        sorted_points = points[:]
-        quicksort(sorted_points, 0, len(points) - 1, dim)
-        return sorted_points
-
-    def divide_points(self,points,dim):
-        if len( points[dim])==0:
-            return None
-        if len(points[dim]) == 1:
-            return points[dim][0], [], []
-        median = points[dim][(len(points[dim])-1) // 2][dim]
-        median_point = points[dim][(len(points[dim])-1) // 2]
-        left = []
-        right = []
-        for i in range(2):
-            left_points = [point for point in points[i] if point[dim] <= median]
-            right_points = [point for point in points[i] if point[dim] > median]
-            left.append(left_points)
-            right.append(right_points)
-        return median_point, left, right
 
     def build_tree(self, points, depth=0):
         if not points:
@@ -78,6 +56,7 @@ class KDtree:
         root.right = self.build_tree(right_points, depth + 1)
 
         return root
+
 
     def search_area(self, area, root, depth=0):
         if root is None:

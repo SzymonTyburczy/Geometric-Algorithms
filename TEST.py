@@ -2,7 +2,7 @@ import GENERATE
 from random import randint
 from timeit import default_timer as timer
 import QuadTree as QUADT
-import kdtree_object_implementation_leafs as KdBuild
+from kdtree import kdtree_implementation as KdBuild
 import sys
 sys.setrecursionlimit(10000000)
 
@@ -53,7 +53,7 @@ testout()
 print("\n\nTESTY RECZNE \n")
 # TEST 1
 print("TEST 1")
-one = GENERATE.try1_1()
+one = GENERATE.try1()
 start = timer()
 Kd = KdBuild.KDtree(one)
 s1 = Kd.search_area(((0, 0), (100, 150)), Kd.get_root(), 0)
@@ -76,7 +76,7 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 
 # TEST 2
 print("TEST 2")
-two = GENERATE.try2_2()
+two = GENERATE.try2()
 start = timer()
 Kd = KdBuild.KDtree(two)
 s1 = Kd.search_area(((0, 0), (70, 60)), Kd.get_root(), 0)
@@ -99,7 +99,7 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 
 # TEST 3
 print("TEST 3")
-three = GENERATE.try3_3()
+three = GENERATE.try3()
 start = timer()
 Kd = KdBuild.KDtree(three)
 s1 = Kd.search_area(((-10, 0), (50, 70)), Kd.get_root(), 0)
@@ -124,7 +124,7 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 
 # TEST 4
 print("TEST 4")
-four = GENERATE.try4_4()
+four = GENERATE.try4()
 start = timer()
 Kd = KdBuild.KDtree(four)
 s1 = Kd.search_area(((0, 0), (10, 15)), Kd.get_root(), 0)
@@ -147,7 +147,7 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 
 # TEST 5
 print("TEST 5")
-five = GENERATE.try5_5()
+five = GENERATE.try5()
 start = timer()
 Kd = KdBuild.KDtree(five)
 s1 = Kd.search_area(((-5, 0), (10, 2)), Kd.get_root(), 0)
@@ -170,7 +170,7 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 
 # TEST 6
 print("TEST 6")
-six = GENERATE.try_evenly1_6()
+six = GENERATE.try_evenly1()
 start = timer()
 Kd = KdBuild.KDtree(six)
 s1 = Kd.search_area(((0, 0), (8, 8)), Kd.get_root(), 0)
@@ -193,7 +193,7 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 
 # TEST 7
 print("TEST 7")
-seven = GENERATE.try_evenly2_7()
+seven = GENERATE.try_evenly2()
 start = timer()
 Kd = KdBuild.KDtree(seven)
 s1 = Kd.search_area(((0, 0), (7, 7)), Kd.get_root(), 0)
@@ -216,7 +216,7 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 
 # TEST 8
 print("TEST 8")
-eight = GENERATE.try_evenly3_8()
+eight = GENERATE.try_evenly3()
 start = timer()
 Kd = KdBuild.KDtree(eight)
 s1 = Kd.search_area(((-200, -200), (500, 500)), Kd.get_root(), 0)
@@ -239,7 +239,7 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 
 # TEST 9
 print("TEST 9")
-nine = GENERATE.try_evenly4_9()
+nine = GENERATE.try_evenly4()
 start = timer()
 Kd = KdBuild.KDtree(nine)
 s1 = Kd.search_area(((-4, -4), (4, 4)), Kd.get_root(), 0)
@@ -262,7 +262,7 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 
 # TEST 10
 print("TEST 10")
-ten = GENERATE.try_evenly5_10()
+ten = GENERATE.try_evenly5()
 start = timer()
 Kd = KdBuild.KDtree(ten)
 s1 = Kd.search_area(((-2, -2), (2, 2)), Kd.get_root(), 0)
@@ -287,13 +287,13 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 print("TEST 11")
 
 start = timer()
-Kd = KdBuild.KDtree(GENERATE.try_halfevenly6_11())
+Kd = KdBuild.KDtree(GENERATE.try_halfevenly6())
 s1 = Kd.search_area(((4, 4), (10, 10)), Kd.get_root(), 0)
 end = timer()
 
 
 start1 = timer()
-QT = QUADT.CreateQuad(GENERATE.try_halfevenly6_11())
+QT = QUADT.CreateQuad(GENERATE.try_halfevenly6())
 s2 = QT.query(4, 4, 10, 10)
 end1 = timer()
 
@@ -310,13 +310,13 @@ print(f"Czas wykonania KDTree: {end - start} sekund, Czas wykonania QuadTree: {e
 print("TEST 12")
 
 start = timer()
-Kd = KdBuild.KDtree(GENERATE.try_halfevenly7_12())
+Kd = KdBuild.KDtree(GENERATE.try_halfevenly7())
 s1 = Kd.search_area(((-10, 0), (10, 15)), Kd.get_root(), 0)
 end = timer()
 
 
 start1 = timer()
-QT = QUADT.CreateQuad(GENERATE.try_halfevenly7_12())
+QT = QUADT.CreateQuad(GENERATE.try_halfevenly7())
 s2 = QT.query(-10, 0, 10, 15)
 end1 = timer()
 
