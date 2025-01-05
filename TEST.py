@@ -2,7 +2,7 @@ import GENERATE
 from random import randint
 from timeit import default_timer as timer
 import QuadTree as QUADT
-from kdtree import kdtree_implementation as KdBuild
+import kdtree as KdBuild
 import sys
 sys.setrecursionlimit(10000000)
 
