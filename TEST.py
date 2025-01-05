@@ -8,20 +8,36 @@ sys.setrecursionlimit(10000000)
 
 
 def testout():
-    for i in range(200, 1001, 200):
-        test = GENERATE.generate_points(i, 1000)
+    test_licz = 0
+    for i in range(20000, 100001, 20000): #i to ilosc punktow
+        test_licz +=1
+        print(f"TEST: {test_licz}")
+        test = GENERATE.generate_points(i, 10000) #ilosc punkto oraz max wartosc danego punktu
+        start_build_kd = timer()
         Kd = KdBuild.KDtree(test)
-        QT = QUADT.CreateQuad(test)
+        end_build_kd = timer()
 
-        v = 300
+        start_build_qt = timer()
+        QT = QUADT.CreateQuad(test)
+        end_build_qt = timer()
+        print("czas tworzenia KD-Tree", end_build_kd - start_build_kd, "QuadTree", end_build_qt - start_build_qt)
+
+        v = 3000 #wartosc w ktorych moze byc wylosowana wartosci dla prostokata
         while True:
             x1 = randint(-v, v)
-            x2 = randint(-v, v)
+            x2 = randint(x1, 2*v)
             y1 = randint(-v, v)
-            y2 = randint(-v, v)
+            y2 = randint(y1, 2*v)
 
+            start_build_kd = timer()
             s1 = Kd.search_area(((x1, y1), (x2, y2)), Kd.get_root(), 0)
+            end_build_kd = timer()
+
+            start_build_qt = timer()
             s2 = QT.query(x1, y1, x2, y2)
+            end_build_qt = timer()
+
+            print("czas wyszukiwania KD-Tree", end_build_kd - start_build_kd, "QuadTree", end_build_qt - start_build_qt)
 
             if set(s1) != set(s2):
                 print("ERROR!")
@@ -34,7 +50,7 @@ testout()
 
 
 
-
+print("\n\nTESTY RECZNE \n")
 # TEST 1
 print("TEST 1")
 one = GENERATE.try1_1()
