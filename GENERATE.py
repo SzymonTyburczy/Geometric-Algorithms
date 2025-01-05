@@ -29,6 +29,8 @@ def evenly(s, e, n):
     x_values = np.linspace(s, e, n)  # Środki sektorów na osi x
     y_values = np.linspace(s, e, n)  # Środki sektorów na osi y
     grid_points_even = [(x, y) for x in x_values for y in y_values]  # Generowanie punktów
+    for i in range(len(grid_points_even)):
+        grid_points_even[i] = (float(grid_points_even[i][0]), float(grid_points_even[i][1]))
     return grid_points_even
 
 
@@ -36,7 +38,8 @@ def halfevenly(s1, e1, s2, e2):
     x_values = np.linspace(s1, e1, e1-s1+1)  # Środki sektorów na osi x
     y_values = np.linspace(s2, e2, e2-s2+1)  # Środki sektorów na osi y
     grid_points_even = [(x, y) for x in x_values for y in y_values]  # Generowanie punktów
-
+    for i in range(len(grid_points_even)):
+        grid_points_even[i] = (float(grid_points_even[i][0]), float(grid_points_even[i][1]))
     return grid_points_even
 
 
