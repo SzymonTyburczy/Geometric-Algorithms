@@ -1,6 +1,5 @@
 Mark de Berg "Geometria Obliczeniowa - Algorytmy i Zastosowania"
 Wikipedia kd-tree:
     https://en.wikipedia.org/wiki/K-d_tree
-
-Prezentacja o box bounding: (??)
-    https://www.cs.princeton.edu/courses/archive/fall20/cos226/precepts/kd-tree-bounding-boxes.pdf
+Film o zasadzie działania kdtree:
+https://www.youtube.com/watch?v=Glp7THUpGow&pp=ygUGa2R0cmVl
