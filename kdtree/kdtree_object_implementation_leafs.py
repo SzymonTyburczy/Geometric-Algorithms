@@ -31,12 +31,8 @@ class KDtree:
 
     @staticmethod
     def sort_by_dim(points, dim):
-        if isinstance(points,np.ndarray):
-            sorted_points = points.copy()
-            quicksort_np(sorted_points, 0, len(points) - 1, dim)
-        else:
-            sorted_points = points[:]
-            quicksort(sorted_points, 0, len(points) - 1, dim)
+        sorted_points = points[:]
+        quicksort(sorted_points, 0, len(points) - 1, dim)
         return sorted_points
 
     def divide_points(self,points,dim):
