@@ -1,0 +1,5 @@
+Mark de Berg "Geometria Obliczeniowa - Algorytmy i Zastosowania"
+Wikipedia kd-tree:
+    https://en.wikipedia.org/wiki/K-d_tree
+Film o zasadzie działania kdtree:
+https://www.youtube.com/watch?v=Glp7THUpGow&pp=ygUGa2R0cmVl
